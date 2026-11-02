@@ -1,0 +1,387 @@
+{
+  "results": [
+    {
+      "scenarioNumber": 1,
+      "title": "The St. Regis Shadow Flicker",
+      "caseNumber": "CASE-2024-STREGIS-01",
+      "id": "6ae78234a9370d1777c6daee",
+      "genre": "theft",
+      "elapsedMs": 32476,
+      "suspects": [
+        {
+          "id": "suspect_001",
+          "name": "Julian Vane",
+          "role": "Socialite",
+          "avatarUrl": "/uploads/asset_e3c8cf715b8740a5.svg",
+          "fileExists": true,
+          "fileSize": 2084,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_002",
+          "name": "Sarah Jenkins",
+          "role": "Personal Assistant",
+          "avatarUrl": "/uploads/asset_b529896278c94d58.svg",
+          "fileExists": true,
+          "fileSize": 2088,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_003",
+          "name": "Marcus Thorne",
+          "role": "Security Consultant",
+          "avatarUrl": "/uploads/asset_d665f2ae70054254.jpg",
+          "fileExists": true,
+          "fileSize": 36837,
+          "tierUsed": "pollinations"
+        },
+        {
+          "id": "suspect_004",
+          "name": "Elena Rossi",
+          "role": "Jewelry Appraiser",
+          "avatarUrl": "/uploads/asset_d5b8e1e120024b89.svg",
+          "fileExists": true,
+          "fileSize": 2093,
+          "tierUsed": "svg_fallback"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "evidence_001",
+          "type": "cctv",
+          "title": "Hallway Security Feed",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_c33749174a044e76.svg"
+        },
+        {
+          "id": "evidence_002",
+          "type": "digital_record",
+          "title": "Security System Access Logs",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        },
+        {
+          "id": "evidence_003",
+          "type": "image",
+          "title": "Forensic Analysis of Pocket Residue",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_57ce031d78d44971.svg"
+        },
+        {
+          "id": "evidence_004",
+          "type": "chat",
+          "title": "Elena Rossi Phone Log",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        }
+      ]
+    },
+    {
+      "scenarioNumber": 2,
+      "title": "The Astronomer's Vanishing Act",
+      "caseNumber": "CASE-2026-MR01",
+      "id": "6ae7824da9370d1777c6db09",
+      "genre": "museum",
+      "elapsedMs": 25203,
+      "suspects": [
+        {
+          "id": "suspect_001",
+          "name": "Julian Vane",
+          "role": "Museum Director",
+          "avatarUrl": "/uploads/asset_941f06ff0e114869.svg",
+          "fileExists": true,
+          "fileSize": 2091,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_002",
+          "name": "Elena Rossi",
+          "role": "Security Chief",
+          "avatarUrl": "/uploads/asset_a75d49d1e8b7473f.svg",
+          "fileExists": true,
+          "fileSize": 2085,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_003",
+          "name": "Marcus Thorne",
+          "role": "Lead Conservator",
+          "avatarUrl": "/uploads/asset_3a51b7b1e9fb48ca.svg",
+          "fileExists": true,
+          "fileSize": 2091,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_004",
+          "name": "Sarah Jenkins",
+          "role": "Curator",
+          "avatarUrl": "/uploads/asset_84a77045abd8464f.svg",
+          "fileExists": true,
+          "fileSize": 2077,
+          "tierUsed": "svg_fallback"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "evidence_001",
+          "type": "cctv",
+          "title": "Hallway 3 Surveillance Feed",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_42141eabd2ac42d4.svg"
+        },
+        {
+          "id": "evidence_002",
+          "type": "digital_record",
+          "title": "Restoration Lab Access Logs",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        },
+        {
+          "id": "evidence_003",
+          "type": "image",
+          "title": "Forensic Analysis of Lab Coat",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_1d5290eb4ae944a7.svg"
+        },
+        {
+          "id": "evidence_004",
+          "type": "witness_statement",
+          "title": "Julian Vane Interrogation",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        }
+      ]
+    },
+    {
+      "scenarioNumber": 3,
+      "title": "The Ghost in the Kensington Code",
+      "caseNumber": "CASE-2026-MR01",
+      "id": "6ae78264a9370d1777c6db24",
+      "genre": "disappearance",
+      "elapsedMs": 22314,
+      "suspects": [
+        {
+          "id": "suspect_001",
+          "name": "Arthur Pringle",
+          "role": "House Manager",
+          "avatarUrl": "/uploads/asset_6dbd9162767b4047.svg",
+          "fileExists": true,
+          "fileSize": 2082,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_002",
+          "name": "Marcus Thorne",
+          "role": "Business Partner",
+          "avatarUrl": "/uploads/asset_f98289117f9e4552.svg",
+          "fileExists": true,
+          "fileSize": 2093,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_003",
+          "name": "Elena Vance",
+          "role": "Lead Developer",
+          "avatarUrl": "/uploads/asset_136c453f5874452a.svg",
+          "fileExists": true,
+          "fileSize": 2086,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_004",
+          "name": "Sarah Vance",
+          "role": "Estranged Wife",
+          "avatarUrl": "/uploads/asset_13c7115f91704159.svg",
+          "fileExists": true,
+          "fileSize": 2090,
+          "tierUsed": "svg_fallback"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "ev_001",
+          "type": "cctv",
+          "title": "Study Exterior Surveillance",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_b47445eb62634846.svg"
+        },
+        {
+          "id": "ev_002",
+          "type": "image",
+          "title": "Forensic Mud Analysis",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_0da29c7621fd4e51.svg"
+        },
+        {
+          "id": "ev_003",
+          "type": "digital_record",
+          "title": "System Backdoor Logs",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        },
+        {
+          "id": "ev_004",
+          "type": "chat",
+          "title": "Internal Communication Log",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        }
+      ]
+    },
+    {
+      "scenarioNumber": 4,
+      "title": "The Null-Byte Breach",
+      "caseNumber": "CASE-2026-MR01",
+      "id": "6ae78344a9370d1777c6db3f",
+      "genre": "corporate",
+      "elapsedMs": 223590,
+      "suspects": [
+        {
+          "id": "suspect_001",
+          "name": "Marcus Thorne",
+          "role": "Security Chief",
+          "avatarUrl": "/uploads/asset_3d2152a773a94da4.jpg",
+          "fileExists": true,
+          "fileSize": 34922,
+          "tierUsed": "pollinations"
+        },
+        {
+          "id": "suspect_002",
+          "name": "Elena Vance",
+          "role": "Financial Analyst",
+          "avatarUrl": "/uploads/asset_3dde04e22d55400e.svg",
+          "fileExists": true,
+          "fileSize": 2088,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_003",
+          "name": "Julian Vane",
+          "role": "Lead Systems Architect",
+          "avatarUrl": "/uploads/asset_c6f95c4b826c4340.svg",
+          "fileExists": true,
+          "fileSize": 2095,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_004",
+          "name": "Sarah Jenkins",
+          "role": "Junior Developer",
+          "avatarUrl": "/uploads/asset_f9e035239fdc4d52.svg",
+          "fileExists": true,
+          "fileSize": 2086,
+          "tierUsed": "svg_fallback"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "ev_001",
+          "type": "cctv",
+          "title": "Corridor Surveillance - Level 4",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_94d7ae774d5b44d0.svg"
+        },
+        {
+          "id": "ev_002",
+          "type": "image",
+          "title": "Evidence Photo: Desk Drawer Contents",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_02f81c8d0a2243bc.svg"
+        },
+        {
+          "id": "ev_003",
+          "type": "digital_record",
+          "title": "Badge Access Logs",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        },
+        {
+          "id": "ev_004",
+          "type": "chat",
+          "title": "Julian Vane's Internal Messaging",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        }
+      ]
+    },
+    {
+      "scenarioNumber": 5,
+      "title": "The Zero-Kelvin Heist",
+      "caseNumber": "CASE-2026-MR01",
+      "id": "6ae78356a9370d1777c6db5a",
+      "genre": "suspicious_incident",
+      "elapsedMs": 17896,
+      "suspects": [
+        {
+          "id": "suspect_001",
+          "name": "Dr. Aris Thorne",
+          "role": "Senior Researcher",
+          "avatarUrl": "/uploads/asset_0a530ee8ef184734.svg",
+          "fileExists": true,
+          "fileSize": 2087,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_002",
+          "name": "Elena Vance",
+          "role": "Lab Technician",
+          "avatarUrl": "/uploads/asset_0b2c32e4b3844b85.svg",
+          "fileExists": true,
+          "fileSize": 2091,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_003",
+          "name": "Marcus Reed",
+          "role": "Hazmat Safety Officer",
+          "avatarUrl": "/uploads/asset_5088e64a25554efe.svg",
+          "fileExists": true,
+          "fileSize": 2089,
+          "tierUsed": "svg_fallback"
+        },
+        {
+          "id": "suspect_004",
+          "name": "Sarah Jenkins",
+          "role": "Junior Analyst",
+          "avatarUrl": "/uploads/asset_59c0776282724166.svg",
+          "fileExists": true,
+          "fileSize": 2092,
+          "tierUsed": "svg_fallback"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "ev_001",
+          "type": "cctv",
+          "title": "Sub-Level 2 Cleanroom Entrance",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_6c4892b810bf4cb5.svg"
+        },
+        {
+          "id": "ev_002",
+          "type": "image",
+          "title": "Shattered Containment Vial",
+          "hasVisualThumbnail": true,
+          "thumbnailUrl": "/uploads/asset_1c089643b40b4cab.svg"
+        },
+        {
+          "id": "ev_003",
+          "type": "digital_record",
+          "title": "Cleanroom Access Log",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        },
+        {
+          "id": "ev_004",
+          "type": "witness_statement",
+          "title": "Forensic Lab Report - Gloves",
+          "hasVisualThumbnail": false,
+          "thumbnailUrl": null
+        }
+      ]
+    }
+  ],
+  "duplicateCount": 0,
+  "recoverySuccess": true,
+  "totalImages": 30
+}
