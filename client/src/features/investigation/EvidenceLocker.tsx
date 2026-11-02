@@ -17,6 +17,7 @@ import { Modal } from "../../components/common/Modal";
 import { ChatViewer } from "../../components/evidence/ChatViewer";
 import { CctvViewer } from "../../components/evidence/CctvViewer";
 import { DocumentViewer } from "../../components/evidence/DocumentViewer";
+import { resolveMediaUrl } from "../../services/api";
 
 export interface EvidenceItem {
   id: string;
@@ -229,7 +230,7 @@ export function EvidenceLocker({
                 {visualUrl && (
                   <div className="relative my-3 w-full h-40 rounded-xl bg-slate-950 border border-slate-800/80 overflow-hidden group/thumb">
                     <img
-                      src={visualUrl}
+                      src={resolveMediaUrl(visualUrl)}
                       alt={item.title}
                       loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"

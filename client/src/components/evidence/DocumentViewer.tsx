@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { Badge } from "../common/Badge";
+import { resolveMediaUrl } from "../../services/api";
 
 interface DocumentViewerProps {
   type: string;
@@ -201,7 +202,7 @@ export function DocumentViewer({
                 <div className="relative inline-block">
                   <img
                     key={`${content.imageUrl}_${retryKey}`}
-                    src={content.imageUrl}
+                    src={resolveMediaUrl(content.imageUrl)}
                     alt={content.caption || title}
                     onLoad={() => setImageLoading(false)}
                     onError={() => {
@@ -271,7 +272,7 @@ export function DocumentViewer({
             </div>
             <div className="flex justify-center p-2 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden max-h-[75vh]">
               <img
-                src={content.imageUrl}
+                src={resolveMediaUrl(content.imageUrl)}
                 alt={content.caption || title}
                 className="max-h-[70vh] w-auto object-contain rounded-lg"
               />

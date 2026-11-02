@@ -3,6 +3,7 @@ import { User, ShieldCheck, Quote, ArrowRight, X, Maximize2, Fingerprint, AlertC
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
+import { resolveMediaUrl } from "../../services/api";
 
 export interface SuspectItem {
   id: string;
@@ -64,7 +65,7 @@ export function SuspectsPanel({
                     {suspect.avatarUrl ? (
                       <>
                         <img
-                          src={suspect.avatarUrl}
+                          src={resolveMediaUrl(suspect.avatarUrl)}
                           alt={suspect.name}
                           className="w-full h-full object-cover transition-transform duration-200 group-hover/avatar:scale-110"
                           onError={(e) => {
@@ -184,7 +185,7 @@ export function SuspectsPanel({
             </div>
             <div className="flex justify-center p-3 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
               <img
-                src={zoomedSuspect.avatarUrl}
+                src={resolveMediaUrl(zoomedSuspect.avatarUrl)}
                 alt={zoomedSuspect.name}
                 className="max-h-[60vh] w-auto object-contain rounded-lg shadow-lg"
               />

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { CctvEvidenceContent } from "../../types/mystery";
 import { Badge } from "../common/Badge";
+import { resolveMediaUrl } from "../../services/api";
 
 interface CctvViewerProps {
   content: CctvEvidenceContent;
@@ -129,7 +130,7 @@ export function CctvViewer({ content }: CctvViewerProps): React.ReactElement {
                   <div className="relative group/frame">
                     <img
                       key={`${activeFrame.imageUrl}_${retryKey}`}
-                      src={activeFrame.imageUrl}
+                      src={resolveMediaUrl(activeFrame.imageUrl)}
                       alt={activeFrame.description}
                       onLoad={() => setImageLoading(false)}
                       onError={() => {
@@ -258,7 +259,7 @@ export function CctvViewer({ content }: CctvViewerProps): React.ReactElement {
             </div>
             <div className="flex justify-center p-2 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden max-h-[75vh]">
               <img
-                src={activeFrame.imageUrl}
+                src={resolveMediaUrl(activeFrame.imageUrl)}
                 alt={activeFrame.description}
                 className="max-h-[70vh] w-auto object-contain rounded-lg"
               />

@@ -20,10 +20,45 @@ export function createApp(): express.Application {
     })
   );
 
-  // CORS Configuration
+  // CORS Configuration supporting single or comma-separated origins, trailing slash removal, and Vercel previews
+  const configuredOrigins = env.CLIENT_URL
+    ? env.CLIENT_URL.split(",").map((o) => o.trim().replace(/\/+$/, "")).filter(Boolean)
+    : [];
+
   app.use(
     cors({
-      origin: env.CLIENT_URL,
+      origin: (requestOrigin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, curl, server-to-server, Render health checks)
+        if (!requestOrigin) {
+          return callback(null, true);
+        }
+
+        const normalizedOrigin = requestOrigin.trim().replace(/\/+$/, "");
+
+        // 1. Direct match with configured origins
+        if (configuredOrigins.length === 0 || configuredOrigins.includes(normalizedOrigin)) {
+          return callback(null, true);
+        }
+
+        // 2. Allow local Vite development
+        if (
+          normalizedOrigin === "http://localhost:5173" ||
+          normalizedOrigin === "http://127.0.0.1:5173" ||
+          normalizedOrigin.startsWith("http://localhost:")
+        ) {
+          return callback(null, true);
+        }
+
+        // 3. Allow Vercel preview deployments if main Vercel domain is configured
+        if (
+          normalizedOrigin.endsWith(".vercel.app") &&
+          configuredOrigins.some((o) => o.includes("vercel.app"))
+        ) {
+          return callback(null, true);
+        }
+
+        callback(new Error(`Origin ${requestOrigin} not allowed by CORS`));
+      },
       credentials: true,
       methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization", "X-Request-Id", "X-Guest-Session-Id"],
