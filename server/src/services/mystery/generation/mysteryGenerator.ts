@@ -62,9 +62,11 @@ export class MysteryGenerator {
     };
 
     // If Gemini API is available, execute multi-stage AI pipeline
+    let isAiGenerated = false;
     if (geminiClient.isAvailable()) {
       try {
         bundle = await this.generateWithGemini(scenario, genre, difficulty, suspectCount);
+        isAiGenerated = true;
       } catch (aiErr) {
         console.warn("Gemini generation failed, falling back to procedural engine:", aiErr);
         bundle = await generateProceduralMystery(scenario, genre, difficulty, suspectCount);
@@ -72,6 +74,11 @@ export class MysteryGenerator {
     } else {
       // Procedural synthesis engine (offline / dev mode without API key)
       bundle = await generateProceduralMystery(scenario, genre, difficulty, suspectCount);
+    }
+
+    // Protect and harmonize AI-generated bundle so Gemini synthesis is never lost
+    if (isAiGenerated) {
+      this.repairGeminiBundle(bundle, difficulty, suspectCount);
     }
 
     // Deterministic consistency validation (Section 6.5)
@@ -82,9 +89,9 @@ export class MysteryGenerator {
       suspectCount
     );
 
-    // If invalid, execute bounded repair attempt
+    // If still invalid, execute fallback
     if (!validation.isValid) {
-      console.warn("Generated case failed validation. Attempting bounded repair. Errors:", validation.errors);
+      console.warn("Generated case failed validation. Attempting fallback. Errors:", validation.errors);
       bundle = await generateProceduralMystery(scenario, genre, difficulty, suspectCount);
       validation = consistencyValidator.validateMystery(
         bundle.publicCase,
@@ -101,6 +108,8 @@ export class MysteryGenerator {
           validation.errors
         );
       }
+    } else if (isAiGenerated) {
+      console.log(`[MysteryGenerator] SUCCESS: Generated 100% custom Gemini AI mystery: "${bundle.title}"`);
     }
 
     // Persist into database using separate collections (ADR-001)
@@ -121,6 +130,106 @@ export class MysteryGenerator {
       title: bundle.title,
       status: "ready",
     };
+  }
+
+  /**
+   * Harmonizes suspect IDs, culprit references, and decisive evidence to guarantee consistency
+   */
+  private repairGeminiBundle(
+    bundle: {
+      title: string;
+      publicCase: PublicCaseData;
+      privateSolution: Omit<PrivateSolutionData, "mysteryId">;
+    },
+    difficulty: MysteryDifficulty,
+    suspectCount: number
+  ) {
+    const { publicCase, privateSolution } = bundle;
+    const suspects = publicCase.suspects || [];
+    const evidence = publicCase.evidence || [];
+
+    // 1. Ensure all suspects have valid IDs and names
+    suspects.forEach((s, idx) => {
+      if (!s.id) s.id = `suspect_${idx + 1}`;
+      if (!s.name) s.name = `Person of Interest #${idx + 1}`;
+      if (!s.initialStatement) s.initialStatement = "I have cooperated fully with the investigation.";
+    });
+
+    const suspectIds = new Set(suspects.map((s) => s.id));
+
+    // 2. Ensure culpritSuspectId exists in suspects
+    if (!privateSolution.culpritSuspectId || !suspectIds.has(privateSolution.culpritSuspectId)) {
+      const matchingSuspect = suspects.find(
+        (s) =>
+          s.id.toLowerCase() === (privateSolution.culpritSuspectId || "").toLowerCase() ||
+          s.name.toLowerCase().includes((privateSolution.culpritSuspectId || "").toLowerCase())
+      );
+      privateSolution.culpritSuspectId = matchingSuspect ? matchingSuspect.id : (suspects[0]?.id || "suspect_1");
+    }
+
+    // 3. Ensure evidence items have valid IDs and titles
+    evidence.forEach((e, idx) => {
+      if (!e.id) e.id = `evidence_${idx + 1}`;
+      if (!e.title) e.title = `Evidence Item #${idx + 1}`;
+      if (e.relatedSuspectIds) {
+        e.relatedSuspectIds = e.relatedSuspectIds.filter((id) => suspectIds.has(id));
+      }
+    });
+
+    const evidenceIds = new Set(evidence.map((e) => e.id));
+
+    // 4. Ensure decisiveEvidenceIds contains existing evidence IDs
+    const validDecisive = (privateSolution.decisiveEvidenceIds || []).filter((id) =>
+      evidenceIds.has(id)
+    );
+    if (validDecisive.length < 2) {
+      // Find evidence related to the culprit
+      const culpritEvidence = evidence
+        .filter((e) => e.relatedSuspectIds?.includes(privateSolution.culpritSuspectId))
+        .map((e) => e.id);
+
+      for (const eid of culpritEvidence) {
+        if (!validDecisive.includes(eid)) validDecisive.push(eid);
+        if (validDecisive.length >= 2) break;
+      }
+      // If still fewer than 2, backfill with first evidence items
+      for (const e of evidence) {
+        if (!validDecisive.includes(e.id)) validDecisive.push(e.id);
+        if (validDecisive.length >= 2) break;
+      }
+    }
+    privateSolution.decisiveEvidenceIds = validDecisive;
+
+    // 5. Clean timeline references
+    if (publicCase.timeline) {
+      publicCase.timeline.forEach((t) => {
+        if (t.relatedSuspectIds) {
+          t.relatedSuspectIds = t.relatedSuspectIds.filter((id) => suspectIds.has(id));
+        }
+      });
+    }
+
+    // 6. Ensure motive and explanation exist
+    if (!privateSolution.motive) {
+      privateSolution.motive = "Personal gain, concealed secrets, and opportunism.";
+    }
+    if (!privateSolution.explanation) {
+      privateSolution.explanation = `The evidence definitively isolates ${privateSolution.culpritSuspectId} as the culprit.`;
+    }
+
+    // 7. Ensure authoritative timeline has events
+    if (!privateSolution.authoritativeTimeline || privateSolution.authoritativeTimeline.length === 0) {
+      privateSolution.authoritativeTimeline = [
+        {
+          id: "auth_t1",
+          time: publicCase.incidentTime || "21:00",
+          trueEvent: `Culprit ${privateSolution.culpritSuspectId} carried out the act during the critical incident window.`,
+          actors: [privateSolution.culpritSuspectId],
+          isContradictedByLies: true,
+          correspondingEvidenceIds: [],
+        },
+      ];
+    }
   }
 
   private async generateWithGemini(

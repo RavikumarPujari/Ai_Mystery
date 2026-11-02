@@ -37,6 +37,7 @@ export interface GeneratedImageResult {
 
 export class ImageGenerationService {
   private baseDir: string;
+  private pollinationsDisabledUntil: number = 0;
 
   constructor() {
     this.baseDir = path.resolve(process.cwd(), env.MEDIA_STORAGE_PATH || "./uploads");
@@ -75,9 +76,9 @@ export class ImageGenerationService {
     }
 
     // -------------------------------------------------------------------------
-    // Tier 2: Pollinations FLUX / SANA (Zero-Config Open Access)
+    // Tier 2: Pollinations FLUX / SANA (Zero-Config Open Access with Circuit Breaker)
     // -------------------------------------------------------------------------
-    if (!buffer) {
+    if (!buffer && Date.now() > this.pollinationsDisabledUntil) {
       try {
         const pollResult = await this.generateWithPollinations(params.prompt);
         if (pollResult) {
@@ -86,8 +87,10 @@ export class ImageGenerationService {
           tierUsed = "pollinations";
         }
       } catch (err: unknown) {
+        // Trip circuit breaker for 3 minutes on failure to prevent multi-second request stalls
+        this.pollinationsDisabledUntil = Date.now() + 3 * 60 * 1000;
         const msg = err instanceof Error ? err.message : String(err);
-        console.warn(`[ImageGen] Tier 2 (Pollinations) failed (${msg}). Falling back to Tier 3.`);
+        console.warn(`[ImageGen] Tier 2 (Pollinations) failed (${msg}). Circuit breaker tripped for 3m. Using Tier 3 SVG.`);
       }
     }
 
@@ -221,58 +224,35 @@ export class ImageGenerationService {
   }
 
   /**
-   * Pollinations FLUX / Turbo endpoint call with bounded retry
+   * Pollinations fast open endpoint call with bounded 4.5s timeout
    */
   private async generateWithPollinations(
     prompt: string
   ): Promise<{ buffer: Buffer; mimeType: string } | null> {
     const seed = Math.floor(Math.random() * 100000);
-    const encoded = encodeURIComponent(prompt.substring(0, 350));
+    const encoded = encodeURIComponent(prompt.substring(0, 300));
 
-    // Attempt 1: FLUX model with 16s timeout
-    const controller1 = new AbortController();
-    const timeout1 = setTimeout(() => controller1.abort(), 16000);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4500);
     try {
-      const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&model=flux&nologo=true&seed=${seed}`;
-
-      const res = await fetch(url, { signal: controller1.signal });
-      if (res.ok) {
-        const arrayBuf = await res.arrayBuffer();
-        const buffer = Buffer.from(arrayBuf);
-        if (this.isValidImageBuffer(buffer)) {
-          const contentType = res.headers.get("content-type") || "image/jpeg";
-          return { buffer, mimeType: contentType.includes("png") ? "image/png" : "image/jpeg" };
-        }
+      const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&model=turbo&nologo=true&seed=${seed}`;
+      const res = await fetch(url, { signal: controller.signal });
+      if (!res.ok) {
+        throw new Error(`HTTP status ${res.status}`);
       }
-    } catch {
-      // FLUX model was slow or busy; attempt fast model
-    } finally {
-      clearTimeout(timeout1);
-    }
-
-    // Attempt 2: Turbo / fast open endpoint with 12s timeout
-    const controller2 = new AbortController();
-    const timeout2 = setTimeout(() => controller2.abort(), 12000);
-    try {
-      const fastUrl = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&model=turbo&nologo=true&seed=${seed}`;
-
-      const res = await fetch(fastUrl, { signal: controller2.signal });
-      if (res.ok) {
-        const arrayBuf = await res.arrayBuffer();
-        const buffer = Buffer.from(arrayBuf);
-        if (this.isValidImageBuffer(buffer)) {
-          const contentType = res.headers.get("content-type") || "image/jpeg";
-          return { buffer, mimeType: contentType.includes("png") ? "image/png" : "image/jpeg" };
-        }
+      const arrayBuf = await res.arrayBuffer();
+      const buffer = Buffer.from(arrayBuf);
+      if (this.isValidImageBuffer(buffer)) {
+        const contentType = res.headers.get("content-type") || "image/jpeg";
+        return { buffer, mimeType: contentType.includes("png") ? "image/png" : "image/jpeg" };
       }
+      return null;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       throw new Error(`Pollinations failed: ${msg}`);
     } finally {
-      clearTimeout(timeout2);
+      clearTimeout(timeout);
     }
-
-    return null;
   }
 
   /**
