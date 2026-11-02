@@ -18,7 +18,7 @@ const envSchema = z.object({
   API_PREFIX: z.string().default("/api/v1"),
   MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/ai-mystery-room"),
   GEMINI_API_KEY: z.string().optional().default(""),
-  GEMINI_MODEL: z.string().default("gemini-3.1-flash-lite"),
+  GEMINI_MODEL: z.string().default("gemini-3.5-flash-lite"),
   HF_TOKEN: z.string().optional().default(""),
   IMAGE_GENERATION_ENABLED: z.coerce.boolean().default(true),
   JWT_SECRET: z.string().min(16).default("development_jwt_secret_key_at_least_16_chars"),
