@@ -36,9 +36,9 @@ export class GeminiClient {
       );
     }
 
-    const preferredModel = modelOverride || env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+    const preferredModel = modelOverride || env.GEMINI_MODEL || "gemini-3.5-flash";
     const modelsToTry = Array.from(
-      new Set([preferredModel, "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-flash-latest"])
+      new Set([preferredModel, "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"])
     );
 
     let lastError: unknown = null;

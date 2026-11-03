@@ -17,8 +17,12 @@ const envSchema = z.object({
   CLIENT_URL: z.string().default("http://localhost:5173"),
   API_PREFIX: z.string().default("/api/v1"),
   MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/ai-mystery-room"),
-  GEMINI_API_KEY: z.string().optional().default(""),
-  GEMINI_MODEL: z.string().default("gemini-3.5-flash-lite"),
+  GEMINI_API_KEY: z
+    .string()
+    .optional()
+    .default(() => (process.env.GOOGLE_API_KEY || "").trim().replace(/^[\"']|[\"']$/g, ""))
+    .transform((val) => (val || process.env.GOOGLE_API_KEY || "").trim().replace(/^[\"']|[\"']$/g, "")),
+  GEMINI_MODEL: z.string().default("gemini-3.5-flash"),
   HF_TOKEN: z.string().optional().default(""),
   IMAGE_GENERATION_ENABLED: z.coerce.boolean().default(true),
   JWT_SECRET: z.string().min(16).default("development_jwt_secret_key_at_least_16_chars"),

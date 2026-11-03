@@ -68,11 +68,14 @@ export class MysteryGenerator {
         bundle = await this.generateWithGemini(scenario, genre, difficulty, suspectCount);
         isAiGenerated = true;
       } catch (aiErr) {
-        console.warn("Gemini generation failed, falling back to procedural engine:", aiErr);
+        const errorMsg = aiErr instanceof Error ? aiErr.message : String(aiErr);
+        console.error(`[MysteryGenerator] Gemini AI synthesis failed: ${errorMsg}`);
+        console.warn("[MysteryGenerator] Falling back to procedural mystery engine.");
         bundle = await generateProceduralMystery(scenario, genre, difficulty, suspectCount);
       }
     } else {
       // Procedural synthesis engine (offline / dev mode without API key)
+      console.warn("[MysteryGenerator] Gemini API key not configured or client unavailable. Using procedural synthesis engine.");
       bundle = await generateProceduralMystery(scenario, genre, difficulty, suspectCount);
     }
 
